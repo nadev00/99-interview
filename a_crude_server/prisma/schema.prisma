@@ -1,0 +1,25 @@
+generator kysely {
+  provider     = "prisma-kysely"
+  output       = "../src/database"
+  fileName     = "database.type.ts"
+  enumFileName = "database.enum.ts"
+  camelCase    = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          String   @id @default(dbgenerated("gen_random_uuid()"))
+  name        String   @unique
+  description String
+  amount      Int
+  image       String
+  status      String    @default("active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  @@map("product")
+}
